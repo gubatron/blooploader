@@ -1,0 +1,100 @@
+Version 0.8 - 09/20/2008
+    ENHANCEMENTS:
+    - Initial integration with Icon Trays (All OSes)
+    - Highlights the row when user is about to drop files inside the blooploader.
+
+    BUG FIXES:
+    - Fixes major crash issue when browsing folders
+
+    REFACTORS:
+    - Refactored folder content fetching code to have asynchronous painting once all
+      folder elements are fetched from worker thread.
+
+Version 0.7 - 05/09/2008
+---
+    ENHANCEMENTS:
+    - None
+
+    BUG FIXES:
+    - Unlisted - Better error recovery on upload
+    - Unlisted - In Windows restored downloads wouldn't start on their own because of QTimer issues.
+    - Unlisted - Double clicking on a folder could lock the UI if the server was slow to respond.
+                 Put logic on a worker thread. It will now autoexpand the folder when done.
+
+    REFACTORS:
+    - Unlisted - Replaced jsonrpc libraries for newer ones
+---
+
+Version 0.6 - 04/26/2008
+---
+
+    ENHANCEMENTS:
+    - Issue #9  - Enable the UI to Pause/Resume/Cancel Selected Uploads
+    - Issue #12 - Keeps states of uploads for different user accounts individually
+    - Issue #32 - It can rename and delete files using keys 'F2' and 'Delete' respectively
+    - Issue #40 - Passwords will no longer be saved or sent in plain text (client/server fix)
+    - Unlisted  - Enables Pausing All uploads
+    - Unlisted  - Enables Cancelling All uploads
+    - Unlisted  - It allows clearing all Finished, Cancelled or Errored Uploads (Clear Inactive Uploads)
+    - Unlisted  - New Icon and Logo by Luis Ramirez (http://www.elblogo.com)
+    - Unlisted  - Upgraded Qt 4.3.2 to 4.3.4, Sip 4.7.4, and PyQt 4.3.3
+
+    BUG FIXES:
+    - Issue #25 - Renaming now allows you to change the cases of filenames and folders, e.g. abc.mp3 to ABC.mp3. (server side fix)
+    - Issue #26 - Dropping many files no longer causes a UI slowdown
+    - Issue #30 - Underlines no longer allowed when creating a folder (server side fix)
+    - Issue #31 - Create/Rename/Delete folder/file caused temporary UI freeze on slow connection. Better user feedback on status bar
+    - Issue #37 - It will allow interaction after login out and login back in, no more session id error. UploadManager is completely shutdown on logout
+    - Unlisted  - It will no longer add empty/ghost entries on the Upload list
+    - Unlisted  - Added the ability to download a file that the user owns (audio files copied from other users cannot be downloaded)
+
+    REFACTORS:
+    - Dropped HttpUploadProxy wich used python's blocking httplib, now we use Qt's non-blocking QHttp and implemented a state machine with QHttpUploadProxy.
+      Moved all upload logic from RemoteSession into UploadManager, UploadTransaction and QHttpUploadProxy. RemoteSession is meant solely
+      for Bloop account operations, not uploads, it only assists in preparing the initial upload token for a transaction.
+    - Easier worker thread management, some classes now extend 'utils.Employer'
+    - Cleaned over 80 warnings, 30 errors that were probably causing or would cause unreported bugs. Thanks to PyLint and PyDev
+---
+
+Version 0.5 - 02/20/2008
+---
+    
+    ENHANCEMENTS:
+    - Create Directory feature now available via right-click
+    - "Refresh" feature now available via right click. This feature will grab latest contents of the selected folder.
+    - Added a "Change Log" link on the Help menu under "Blooploader Changes"
+    
+    BUG FIXES:
+    - Files with apostrophes in their names can now be uploaded without a problem. 
+
+    REFACTORS:
+    - Backend now uses a single delete API call for multiple items as opposed to using N API calls per N items. Most changes made on Server-side API calls.
+---
+
+Version 0.4 - 02/09/2008 - First Closed Beta Test
+---
+
+    ENHANCEMENTS:
+    - "Logout" available. Users with multiple bloop accounts will find this useful.
+    - Tuned MyBloop server to allow for increased upload speeds from Blooploader users by adding a new algorithm to determine the optimal chunk size.
+    - "Help > Send Feedback" (opens URL to http://www.mybloop.com/pages/feedback.o?area=blooploader)
+    - Menu on the top (File, Help, etc)
+    - Provide pre-upload dupe checking
+    - Browse through user's files successfully, now with worker threads.
+    - Save username / password with [x] Remember Me
+    - Loading Screen when logging in
+    - Check for latest and minimum versions on login
+    - About Dialog
+    - Allow pausing and resuming of uploads on double click. (Only for large files > 10Mb)
+    - Right Click > Set Public / Private
+    - Created Blooploader Installer for Windows
+    - Integrated Dealio offer into Blooploader Windows Installer
+    - Created DMG image for Mac users
+
+    BUG FIXES:
+    - Right Click (Bug Fix: Focusing issue)
+    - "Loading" .gif animation replaced for .png image
+
+    REFACTORS:
+    - Changed UploadManagerView to extend a QTreeView instead
+---

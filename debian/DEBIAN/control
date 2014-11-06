@@ -1,0 +1,17 @@
+Package: blooploader
+Version: 0.8
+Section: Networking
+Priority: optional
+Architecture: all
+Essential: no
+Depends: python-sip4, python-qt4, python-qt4-common
+Pre-Depends:
+Recommends:
+Suggests: 
+Installed-Size: 250
+Maintainer: Gubatron [gubatron@mybloop.com]
+Conflicts:
+Replaces: blooploader
+Provides: blooploader
+Description: A cross-platform, PyQt4 based, Free, GPL2 MyBloop.com file upload client.
+             Upload an unlimited number of files to your MyBloop.com account with simple drag and drop

@@ -1,0 +1,113 @@
+#!/usr/bin/env python
+from random import randint
+from time import time
+
+FILE_SIZE=3000000
+FILE_PREFIX="delete_this_test"
+FILE_NAME_SIZE=10
+FILE_EXT='mp3'
+
+def genFileName(prefix="",ext="mp3"):
+    name=""
+    i=0
+    while i <= FILE_NAME_SIZE:
+        name=name+chr(randint(ord('a'),ord('z')))
+        i=i+1
+    return prefix+ name + "." + ext
+
+def genRandomByteBuffer(size=1024):
+    #fastest way to concatenate strings in python
+    return ''.join([chr(randint(0,255)) for i in xrange(size)])
+
+def genFile(size=FILE_SIZE,bufferSize=0,filename_prefix=FILE_PREFIX,filename_ext=FILE_EXT,outputTime=False):
+    t_start=time()
+    t_end=0
+    f=open(genFileName(prefix=filename_prefix,ext=FILE_EXT),"wb")
+    i=0
+    while i<size:
+        if bufferSize==0:
+            f.write(chr(randint(0,255)))
+            i=i+1
+        else:
+            buffer=genRandomByteBuffer(bufferSize)
+
+            #clip buffer if its gonna end up bigger than FILE_SIZE
+            if i + len(buffer) > size:
+                buffer=buffer[:size-i]
+                print "Last Buffer is",len(buffer),"bytes long"
+            
+            i=i+len(buffer)
+            f.write(buffer)
+            
+    f.close()
+    t_end=time()
+    if outputTime:
+        print
+
+    if outputTime:
+        print "Total time:",t_end-t_start,"secs"
+        print
+
+def benchmark():
+    print "4Mb, no buffering"
+    print "="*30
+    genFile(size=400000,bufferSize=0,outputTime=True)          
+    genFile(size=400000,bufferSize=0,outputTime=True)          
+    genFile(size=400000,bufferSize=0,outputTime=True)          
+    genFile(size=400000,bufferSize=0,outputTime=True)          
+    
+    print "4Mb, buffering 1024bytes" #<<<this turns out to be the fastest in average.
+    print "="*30
+    genFile(size=400000,bufferSize=1024,outputTime=True)          
+    genFile(size=400000,bufferSize=1024,outputTime=True)          
+    genFile(size=400000,bufferSize=1024,outputTime=True)          
+    genFile(size=400000,bufferSize=1024,outputTime=True)          
+    
+    print "4Mb, buffering 128kb"
+    print "="*30
+    genFile(size=400000,bufferSize=1024*128,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*128,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*128,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*128,outputTime=True)          
+    
+    
+    print "4Mb, buffering 256kb"
+    print "="*30
+    genFile(size=400000,bufferSize=1024*256,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*256,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*256,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*256,outputTime=True)          
+    
+    print "4Mb, buffering 512kb"
+    print "="*30
+    genFile(size=400000,bufferSize=1024*512,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*512,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*512,outputTime=True)          
+    genFile(size=400000,bufferSize=1024*512,outputTime=True)
+    
+def usage():
+    print
+    print "Usage: ./random_file_factory <number of files to generate>"
+    print
+    
+if __name__ == "__main__":
+	#import psyco if available, it's literally like 4 times faster
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        pass
+
+    import sys
+    if len(sys.argv) > 1:
+        if int(sys.argv[1]) > 0:
+            for i in xrange(int(sys.argv[1])):
+                print "Generating",sys.argv[1],"2Mb files (buffering 1024 bytes)"
+                genFile(size=2000000,bufferSize=1024,outputTime=True)
+            sys.exit(0)
+        else:
+            usage()
+            sys.exit(1)
+    else:
+        usage()
+        sys.exit(1)

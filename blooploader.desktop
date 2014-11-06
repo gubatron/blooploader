@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Blooploader
+GenericName=P2P Gnutella/Bittorrent client
+Comment=Upload an unlimited number of files to your MyBloop.com account with simple drag and drop
+Exec=/usr/bin/blooploader
+Icon=/usr/share/icons/hicolor/128x128/apps/blooploader.png
+Terminal=false
+Type=Application
+Categories=Application;Network;

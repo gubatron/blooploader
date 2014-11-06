@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /usr/lib/blooploader/
+python blooploader.py > /dev/null &
+cd -
+
